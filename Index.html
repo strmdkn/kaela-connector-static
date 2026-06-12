@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaela the Connector</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@300;400;500;600;700&display=swap">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --red-clay: #7B300D;
+  --orange:   #C05520;
+  --mustard:  #C98511;
+  --teal:     #1EAA9C;
+  --hippie:   #26856F;
+  --dark:     #124443;
+  --bg-deep:  #0a1a19;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg-deep); font-family: 'Montserrat', sans-serif; color: #fff; overflow-x: hidden; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 3.5rem;
+  background: linear-gradient(to bottom, rgba(10,26,25,0.97) 0%, transparent 100%);
+  backdrop-filter: blur(8px);
+}
+.nav-logo { font-family: 'Lora', serif; font-weight: 700; font-size: 18px; color: #fff; letter-spacing: .3px; text-decoration: none; }
+.nav-links { display: flex; gap: 2.2rem; }
+.nav-links a { font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.72); text-decoration: none; transition: color .3s; }
+.nav-links a:hover { color: var(--teal); }
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: inline-block; padding: 13px 32px;
+  background: transparent; border: 1.5px solid var(--teal); color: var(--teal);
+  font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 600;
+  letter-spacing: 2.5px; text-transform: uppercase; border-radius: 30px;
+  cursor: pointer; text-decoration: none; transition: all .3s;
+}
+.btn:hover { background: var(--teal); color: #fff; }
+.btn-orange { border-color: var(--orange); color: var(--orange); }
+.btn-orange:hover { background: var(--orange); color: #fff; }
+.btn-mustard { border-color: var(--mustard); color: var(--mustard); }
+.btn-mustard:hover { background: var(--mustard); color: #fff; }
+.btn-solid { background: var(--teal); color: #fff; border-color: var(--teal); }
+.btn-solid:hover { background: var(--hippie); border-color: var(--hippie); }
+
+/* ─── DOTS ─── */
+.dot { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; display: inline-block; }
+.dot-gold   { background: var(--mustard); box-shadow: 0 0 10px rgba(201,133,17,.5); }
+.dot-teal   { background: var(--teal);    box-shadow: 0 0 10px rgba(30,170,156,.5); }
+.dot-orange { background: var(--orange);  box-shadow: 0 0 10px rgba(192,85,32,.5); }
+.dot-red    { background: var(--red-clay);box-shadow: 0 0 10px rgba(123,48,13,.6); }
+
+/* ─── SECTION 1: HERO ─── */
+#hero {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0d2e2d 0%, #124443 28%, #1a3a2a 52%, #2a1a0a 76%, #3d1a08 100%);
+  position: relative; overflow: hidden; display: flex; align-items: center;
+}
+.hero-orb1 { position:absolute;width:520px;height:520px;right:-70px;top:-90px;background:radial-gradient(circle,rgba(193,85,32,.28) 0%,transparent 72%);border-radius:50%;pointer-events:none; }
+.hero-orb2 { position:absolute;width:360px;height:360px;right:90px;bottom:-110px;background:radial-gradient(circle,rgba(30,170,156,.18) 0%,transparent 70%);border-radius:50%;pointer-events:none; }
+.hero-orb3 { position:absolute;width:280px;height:280px;left:-60px;bottom:-60px;background:radial-gradient(circle,rgba(201,133,17,.15) 0%,transparent 70%);border-radius:50%;pointer-events:none; }
+
+.hero-photo { position:absolute;right:0;top:0;width:52%;height:100%;overflow:hidden;z-index:1; }
+.hero-photo img { width:100%;height:100%;object-fit:cover;object-position:center 18%; }
+.hero-photo .fade-left   { position:absolute;inset:0;z-index:2;background:linear-gradient(to right,#124443 0%,rgba(18,68,67,.92) 14%,rgba(18,68,67,.52) 36%,rgba(18,68,67,.1) 60%,transparent 100%); }
+.hero-photo .fade-bottom { position:absolute;bottom:0;left:0;right:0;height:55%;z-index:2;background:linear-gradient(to top,rgba(30,15,5,.85) 0%,transparent 100%); }
+.hero-photo .fade-top    { position:absolute;top:0;left:0;right:0;height:30%;z-index:2;background:linear-gradient(to bottom,rgba(13,46,45,.75) 0%,transparent 100%); }
+.hero-photo .fade-right  { position:absolute;top:0;right:0;bottom:0;width:18%;z-index:2;background:linear-gradient(to left,rgba(61,26,8,.55) 0%,transparent 100%); }
+
+.hero-content { position:relative;z-index:2;width:50%;padding:8rem 3rem 4rem 5rem; }
+.hero-welcome { font-size:12px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--teal);margin-bottom:1rem; }
+.hero-title { font-family:'Lora',serif;font-weight:700;font-size:54px;line-height:1.05;color:#fff;margin-bottom:2.2rem;text-shadow:0 2px 30px rgba(0,0,0,.45); }
+.hero-list { list-style:none;display:flex;flex-direction:column;gap:1.1rem;margin-bottom:2.6rem; }
+.hero-list li { font-size:18px;font-weight:600;color:rgba(255,255,255,.93);display:flex;align-items:center;gap:14px; }
+
+/* ─── SECTION 2: QUOTE BANNER ─── */
+#quote1 {
+  position:relative;overflow:hidden;min-height:380px;
+  display:flex;align-items:center;justify-content:center;
+}
+#quote1 .bg-photo { position:absolute;inset:0;background-size:cover;background-position:center 30%;filter:brightness(0.32) saturate(0.7); }
+#quote1::before { content:'';position:absolute;top:0;left:0;right:0;height:140px;z-index:2;background:linear-gradient(to bottom,#3d1a08 0%,transparent 100%); }
+#quote1::after  { content:'';position:absolute;bottom:0;left:0;right:0;height:140px;z-index:2;background:linear-gradient(to top,#1a2a1a 0%,transparent 100%); }
+.quote1-inner { position:relative;z-index:3;max-width:760px;text-align:center;padding:5rem 3rem; }
+.quote1-text { font-family:'Lora',serif;font-style:italic;font-size:22px;line-height:1.9;color:rgba(255,255,255,.93);text-shadow:0 2px 15px rgba(0,0,0,.7); }
+.quote1-text .hl { color:var(--teal);font-style:normal;font-weight:700; }
+.quote-bar { width:60px;height:2px;background:linear-gradient(to right,var(--mustard),var(--teal));margin:2.2rem auto 0;border-radius:2px; }
+
+/* ─── SECTION 3: SERVICES ─── */
+#services {
+  background: linear-gradient(180deg, #1a2a1a 0%, #12332a 25%, #1a2010 55%, #2a1a08 80%, #1a1008 100%);
+  padding: 5rem 0 4rem;
+}
+.section-title { text-align:center;font-family:'Lora',serif;font-weight:700;font-size:54px;color:#fff;margin-bottom:4rem;padding:0 2rem;line-height:1.05; }
+
+.service-row { display:flex;align-items:center;padding:3rem 5rem;position:relative; }
+.service-row:nth-child(even) { flex-direction:row-reverse; }
+.service-row + .service-row::before { content:'';position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(to right,transparent,rgba(30,170,156,.2),transparent); }
+
+.service-photo { width:42%;flex-shrink:0;position:relative; }
+.service-photo img { width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center 20%;border-radius:16px;display:block; }
+.service-photo-ph { width:100%;aspect-ratio:1/1;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;font-size:14px;color:rgba(255,255,255,.3);letter-spacing:1px;text-align:center;padding:1.5rem; }
+.ph-green { background:linear-gradient(135deg,#1a3020,#2a4a18);border:1px dashed rgba(30,170,156,.2); }
+.ph-blue  { background:linear-gradient(135deg,#0d1a2a,#1a2040);border:1px dashed rgba(201,133,17,.2); }
+.photo-fade-r { position:absolute;top:0;right:0;width:45%;height:100%;border-radius:0 16px 16px 0;background:linear-gradient(to left,rgba(20,45,20,.88) 0%,transparent 100%);pointer-events:none; }
+.photo-fade-edge { position:absolute;inset:0;border-radius:16px;background:radial-gradient(ellipse at center,transparent 48%,rgba(18,50,26,.72) 100%);pointer-events:none; }
+
+.service-text { flex:1;padding:0 3.5rem; }
+.service-tag  { font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--mustard);margin-bottom:.7rem; }
+.service-h    { font-family:'Lora',serif;font-weight:700;font-size:25px;color:#fff;line-height:1.25;margin-bottom:1.1rem; }
+.service-p    { font-size:15.5px;color:rgba(255,255,255,.8);line-height:1.85;margin-bottom:.9rem; }
+.service-cost { font-size:13px;font-weight:600;color:var(--teal);letter-spacing:.5px;margin-bottom:1.4rem; }
+
+/* ─── SECTION 4: QUOTE OVER PHOTO ─── */
+#quote2 {
+  position:relative;overflow:hidden;min-height:440px;
+  display:flex;align-items:center;justify-content:center;
+}
+#quote2 .bg-photo { position:absolute;inset:0;background-image:url('/mnt/user-data/uploads/SECTION_4_PHOTO_OPTION_2.jpeg');background-size:cover;background-position:center 35%;filter:brightness(0.3) saturate(0.8); }
+#quote2::before { content:'';position:absolute;top:0;left:0;right:0;height:160px;z-index:2;background:linear-gradient(to bottom,#1a1008 0%,transparent 100%); }
+#quote2::after  { content:'';position:absolute;bottom:0;left:0;right:0;height:160px;z-index:2;background:linear-gradient(to top,#1a0e18 0%,transparent 100%); }
+.quote2-inner { position:relative;z-index:3;max-width:820px;text-align:center;padding:4rem 4.5rem;margin:2rem;background:rgba(0,0,0,.38);border-radius:20px;backdrop-filter:blur(3px);box-shadow:0 0 100px rgba(0,0,0,.5); }
+.quote2-text { font-family:'Lora',serif;font-weight:700;font-size:22px;line-height:1.8;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.6); }
+.quote2-text .acc { color:var(--mustard); }
+
+/* ─── SECTION 5 (My Experience) ─── */
+#experience {
+  background: linear-gradient(180deg, #1a0e18 0%, #1a1008 20%, #2a1a08 50%, #1a2010 80%, #12332a 100%);
+  padding: 5rem 4rem;
+}
+.exp-cols { display:flex;gap:2.5rem;margin-top:1rem; }
+.exp-col  { flex:1;display:flex;flex-direction:column;align-items:center; }
+.exp-col-wrap { position:relative;width:100%;margin-bottom:1.8rem; }
+.exp-col-wrap img { width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center 20%;border-radius:16px;display:block; }
+.exp-fade-bot  { position:absolute;bottom:0;left:0;right:0;height:50%;border-radius:0 0 16px 16px;background:linear-gradient(to top,rgba(26,20,8,.9) 0%,transparent 100%);pointer-events:none; }
+.exp-fade-edge { position:absolute;inset:0;border-radius:16px;background:radial-gradient(ellipse at center,transparent 45%,rgba(26,20,8,.65) 100%);pointer-events:none; }
+.exp-text { font-size:15px;font-weight:500;color:rgba(255,255,255,.82);line-height:1.85;text-align:center; }
+.exp-text a { color:var(--teal);text-decoration:none;border-bottom:1px solid rgba(30,170,156,.4); }
+.exp-text a:hover { color:#fff; }
+
+/* ─── CAROUSEL ─── */
+#carousel {
+  background: linear-gradient(180deg, #12332a 0%, #1a2a1a 40%, #2a1a08 70%, #1a1008 100%);
+  padding: 4rem 0 3rem;
+  overflow: hidden;
+}
+.carousel-title { text-align:center;font-family:'Lora',serif;font-weight:700;font-size:28px;color:#fff;margin-bottom:2.5rem;opacity:.7; }
+.carousel-track-wrap { position:relative;overflow:hidden; }
+.carousel-track { display:flex;gap:1rem;transition:transform .5s cubic-bezier(.4,0,.2,1);padding:0 1rem; }
+.carousel-slide {
+  flex:0 0 calc(33.33% - .67rem);cursor:pointer;border-radius:14px;overflow:hidden;
+  position:relative;aspect-ratio:4/3;
+  transition:transform .3s, box-shadow .3s;
+}
+.carousel-slide:hover { transform:scale(1.03);box-shadow:0 12px 40px rgba(0,0,0,.5); }
+.carousel-slide img { width:100%;height:100%;object-fit:cover;display:block; }
+.carousel-slide::after { content:'🔍';position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;font-size:2rem;opacity:0;transition:all .3s; }
+.carousel-slide:hover::after { background:rgba(0,0,0,.25);opacity:1; }
+
+.carousel-nav { display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.8rem; }
+.car-btn { width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(30,170,156,.5);background:transparent;color:var(--teal);font-size:18px;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center; }
+.car-btn:hover { background:var(--teal);color:#fff; }
+.car-dots { display:flex;gap:.5rem; }
+.car-dot { width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .3s; }
+.car-dot.active { background:var(--teal); }
+
+/* ─── LIGHTBOX ─── */
+#lightbox { position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;display:none;align-items:center;justify-content:center;cursor:zoom-out; }
+#lightbox.open { display:flex; }
+#lightbox img { max-width:90vw;max-height:90vh;object-fit:contain;border-radius:10px;box-shadow:0 20px 80px rgba(0,0,0,.8); }
+#lightbox-close { position:absolute;top:1.5rem;right:2rem;font-size:2rem;color:rgba(255,255,255,.7);cursor:pointer;line-height:1;transition:color .2s; }
+#lightbox-close:hover { color:#fff; }
+#lb-prev, #lb-next { position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:none;color:#fff;font-size:2rem;width:56px;height:56px;border-radius:50%;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center; }
+#lb-prev { left:1.5rem; }
+#lb-next { right:1.5rem; }
+#lb-prev:hover, #lb-next:hover { background:rgba(255,255,255,.25); }
+
+/* ─── SECTION 6 (What Makes Me Unique) ─── */
+#unique {
+  background: linear-gradient(180deg, #1a1008 0%, #2a1a08 25%, #3d1a08 55%, #2a1008 80%, #1a0e18 100%);
+  padding: 5rem 5rem;
+  display: flex; align-items: center; gap: 5rem;
+  position: relative; overflow: hidden;
+}
+.unique-orb1 { position:absolute;width:450px;height:450px;left:-100px;top:50%;transform:translateY(-50%);background:radial-gradient(circle,rgba(201,133,17,.1) 0%,transparent 70%);border-radius:50%;pointer-events:none; }
+.unique-orb2 { position:absolute;width:300px;height:300px;right:-60px;bottom:-60px;background:radial-gradient(circle,rgba(30,170,156,.1) 0%,transparent 70%);border-radius:50%;pointer-events:none; }
+.unique-text { flex:1;z-index:1; }
+.unique-pre   { font-size:12px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--mustard);margin-bottom:1rem;text-align:center; }
+.unique-title { font-family:'Lora',serif;font-weight:700;font-size:30px;color:#fff;line-height:1.3;margin-bottom:2.5rem;text-align:center; }
+.eq-list { list-style:none;display:flex;flex-direction:column;gap:1.1rem;margin-bottom:.5rem; }
+.eq-list li { font-size:18px;font-weight:600;color:rgba(255,255,255,.93);display:flex;align-items:center;gap:14px; }
+.eq-op { font-size:30px;font-weight:300;color:rgba(255,255,255,.35);padding-left:4px; }
+.unique-close { font-family:'Lora',serif;font-weight:700;font-size:27px;line-height:1.45;color:#fff;margin-top:2.2rem;text-align:center; }
+.for-you { color:var(--teal); }
+.unique-para { font-size:15.5px;color:rgba(255,255,255,.8);line-height:1.85;text-align:center; }
+.unique-photo { width:42%;flex-shrink:0;position:relative;z-index:1; }
+.unique-photo img { width:100%;aspect-ratio:1/1;object-fit:cover;object-position:center 15%;border-radius:16px;display:block; }
+.unique-photo::before { content:'';position:absolute;inset:0;border-radius:16px;z-index:2;background:radial-gradient(ellipse at center,transparent 42%,rgba(58,22,8,.82) 100%);pointer-events:none; }
+.unique-photo::after  { content:'';position:absolute;top:0;left:0;width:55%;height:100%;border-radius:16px 0 0 16px;z-index:2;background:linear-gradient(to right,rgba(40,16,8,.9) 0%,transparent 100%);pointer-events:none; }
+
+/* ─── SECTION 8: CONTACT ─── */
+#contact {
+  background: linear-gradient(180deg, #1a0e18 0%, #1a1a10 30%, #0e1e1c 65%, #0a1a19 100%);
+  padding: 6rem 3rem 0;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.contact-orb { position:absolute;width:600px;height:600px;left:50%;top:40%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(30,170,156,.07) 0%,transparent 70%);border-radius:50%;pointer-events:none; }
+.contact-title { font-family:'Lora',serif;font-weight:700;font-size:54px;color:#fff;margin-bottom:1.2rem;position:relative;z-index:1;line-height:1.05; }
+.contact-sub   { font-size:16px;color:rgba(255,255,255,.76);line-height:1.9;max-width:640px;margin:0 auto 3rem;position:relative;z-index:1; }
+
+.contact-form { max-width:600px;margin:0 auto;position:relative;z-index:1; }
+.form-row { display:flex;gap:1rem;margin-bottom:1rem; }
+.form-field { flex:1;display:flex;flex-direction:column;gap:.4rem; }
+.form-field.full { flex:none;width:100%;margin-bottom:1rem; }
+.form-field label { font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);text-align:left; }
+.form-field input,
+.form-field textarea {
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;padding:15px 18px;color:#fff;
+  font-family:'Montserrat',sans-serif;font-size:15px;
+  outline:none;transition:border-color .3s;width:100%;
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder { color:rgba(255,255,255,.3); }
+.form-field input:focus,
+.form-field textarea:focus { border-color:var(--teal); }
+.form-field textarea { resize:vertical;min-height:140px; }
+.form-submit { margin-top:1.8rem; }
+.form-success { display:none;color:var(--teal);font-weight:600;font-size:15px;margin-top:1.5rem;letter-spacing:.5px; }
+
+/* bottom photo */
+.contact-bottom-photo { position:relative;margin-top:4rem;width:100%;max-width:700px;margin-left:auto;margin-right:auto; }
+.contact-bottom-photo img { width:100%;border-radius:20px 20px 0 0;display:block;object-fit:cover;max-height:420px; }
+.contact-bottom-photo::before { content:'';position:absolute;top:0;left:0;right:0;height:60%;z-index:2;background:linear-gradient(to bottom,rgba(26,14,24,.85) 0%,transparent 100%);border-radius:20px 20px 0 0;pointer-events:none; }
+.contact-bottom-photo::after  { content:'';position:absolute;left:0;right:0;bottom:0;height:40%;z-index:2;background:linear-gradient(to top,#060f0e 0%,transparent 100%);pointer-events:none; }
+
+/* ─── FOOTER ─── */
+footer { background:#060f0e;text-align:center;padding:2.5rem;font-size:11px;color:rgba(255,255,255,.28);letter-spacing:1.5px;text-transform:uppercase;border-top:1px solid rgba(255,255,255,.06); }
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <span id="lightbox-close" onclick="closeLightbox()">✕</span>
+  <button id="lb-prev" onclick="lbNav(-1)">&#8249;</button>
+  <img id="lightbox-img" src="" alt="" />
+  <button id="lb-next" onclick="lbNav(1)">&#8250;</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">Kaela the Connector</a>
+  <div class="nav-links">
+    <a href="#services">My Offerings</a>
+    <a href="#experience">My Experience</a>
+    <a href="#contact">Connect With Me</a>
+  </div>
+</nav>
+
+<!-- ══ SECTION 1: HERO ══ -->
+<section id="hero">
+  <div class="hero-orb1"></div>
+  <div class="hero-orb2"></div>
+  <div class="hero-orb3"></div>
+  <div class="hero-photo">
+    <img src="/mnt/user-data/uploads/SECTION_1_PHOTO.jpeg" alt="Kaela speaking" />
+    <div class="fade-left"></div>
+    <div class="fade-top"></div>
+    <div class="fade-right"></div>
+    <div class="fade-bottom"></div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-welcome">Welcome! You've found the page of:</p>
+    <h1 class="hero-title">Kaela the<br>Connector</h1>
+    <ul class="hero-list">
+      <li><span class="dot dot-gold"></span> Master Facilitator</li>
+      <li><span class="dot dot-teal"></span> Relational Arts Expert</li>
+      <li><span class="dot dot-orange"></span> Experience Design Consultant</li>
+    </ul>
+    <a href="#contact" class="btn">Work With Me</a>
+  </div>
+</section>
+
+<!-- ══ SECTION 2: QUOTE BANNER ══ -->
+<section id="quote1">
+  <div class="bg-photo" style="background-image:url('/mnt/user-data/uploads/SECTION_2_PHOTO.jpeg')"></div>
+  <div class="quote1-inner">
+    <p class="quote1-text">
+      I've spent the last decade studying trust, belonging, and group coherence.
+      I've worked in <span class="hl">17+ countries</span>, supporting facilitators,
+      event organizers, and team leads to design experiences that promote
+      deep connection and high engagement.
+    </p>
+    <div class="quote-bar"></div>
+  </div>
+</section>
+
+<!-- ══ SECTION 3: SERVICES ══ -->
+<section id="services">
+  <h2 class="section-title">My Offerings</h2>
+
+  <div class="service-row">
+    <div class="service-photo">
+      <div class="service-photo-ph ph-green">📷 Photo C — tropical outdoor</div>
+    </div>
+    <div class="service-text">
+      <p class="service-tag">Services</p>
+      <h3 class="service-h">Guest Speaker or<br>Lead/Co-Facilitation</h3>
+      <p class="service-p">By bringing me in as a guest speaker, or lead/co-facilitator at your event, you'll not only receive live support during the event itself, but also gain direct feedback, modeling, and example material that can accelerate your personal growth as a facilitator and the collective growth of your team or community.</p>
+      <p class="service-cost">$150/hour of facilitation + travel/accommodation</p>
+      <a href="#contact" class="btn btn-orange">Work With Me</a>
+    </div>
+  </div>
+
+  <div class="service-row">
+    <div class="service-photo">
+      <div class="service-photo-ph ph-blue">📷 Photo A — nighttime event aerial</div>
+    </div>
+    <div class="service-text">
+      <p class="service-tag">Most Popular</p>
+      <h3 class="service-h">Experience Design<br>Consultation</h3>
+      <p class="service-p">Unlike many facilitation coaches, I don't simply teach you tips & tricks — I attend and observe your event personally, both in-person or remotely. By experiencing your facilitation & experience design myself, I can offer far more specific and useful feedback than any generic consult is able to do.</p>
+      <p class="service-cost">$150/hour + travel/accommodation</p>
+      <a href="#contact" class="btn">Find Out More</a>
+    </div>
+  </div>
+
+  <div class="service-row">
+    <div class="service-photo">
+      <img src="/mnt/user-data/uploads/PHOTO_B_-_SECTION_3_2.jpg" alt="Facilitation mentorship" />
+      <div class="photo-fade-r"></div>
+      <div class="photo-fade-edge"></div>
+    </div>
+    <div class="service-text">
+      <p class="service-tag">3-Month Container</p>
+      <h3 class="service-h">Facilitation Mentorship</h3>
+      <p class="service-p">This three-month mentorship is for Beg/Int facilitators who want deeper support and ongoing accountability. Together we'll fine-tune your facilitation skills, strengthen your event design, and help you navigate leading group dynamics with greater confidence.</p>
+      <p class="service-cost">$3,000 / three-month container with weekly 60-min calls</p>
+      <a href="#contact" class="btn btn-mustard">Book a Discovery Call</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 4: QUOTE OVER PHOTO ══ -->
+<section id="quote2">
+  <div class="bg-photo"></div>
+  <div class="quote2-inner">
+    <p class="quote2-text">
+      Most standard facilitation trainings teach templates and techniques.<br><br>
+      However, my personalized method helps group leaders understand their
+      <span class="acc">unique strengths</span>, identify blind spots, and develop
+      their own facilitation styles that are both
+      <span class="acc">authentic and effective.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ══ SECTION 5: MY EXPERIENCE ══ -->
+<section id="experience">
+  <h2 class="section-title">My Experience</h2>
+  <div class="exp-cols">
+    <div class="exp-col">
+      <div class="exp-col-wrap">
+        <img src="/mnt/user-data/uploads/SECTION_8_LEFT_PHOTO.jpeg" alt="Kaela facilitating" />
+        <div class="exp-fade-bot"></div>
+        <div class="exp-fade-edge"></div>
+      </div>
+      <p class="exp-text">I have personally led more than 50 team retreats, workshops, residencies, and immersions around the world. I have been location-independent since 2012 and I am experienced working with a broad demographic of international clients.</p>
+    </div>
+    <div class="exp-col">
+      <div class="exp-col-wrap">
+        <img src="/mnt/user-data/uploads/SECTION_8_CENTER_PHOTO_.jpeg" alt="Group circle" />
+        <div class="exp-fade-bot"></div>
+        <div class="exp-fade-edge"></div>
+      </div>
+      <p class="exp-text">I have been consulting for professional facilitators, venue managers, and event organizers since 2021. My unique method of analysis & feedback has gotten me in front of audiences all the way from Buenos Aires, Argentina to Stockholm, Sweden.</p>
+    </div>
+    <div class="exp-col">
+      <div class="exp-col-wrap">
+        <img src="/mnt/user-data/uploads/SECTION_8_RIGHT_PHOTO.JPG" alt="Kaela on stage" />
+        <div class="exp-fade-bot"></div>
+        <div class="exp-fade-edge"></div>
+      </div>
+      <p class="exp-text">I own and run a successful regenerative co-living space in California where I have been able to research and experiment with small group dynamics for the last 8 years. Find out more at <a href="https://montaia.com" target="_blank">Montaia.com</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PHOTO CAROUSEL ══ -->
+<section id="carousel">
+  <div class="carousel-track-wrap">
+    <div class="carousel-track" id="carTrack">
+      <div class="carousel-slide" onclick="openLightbox(0)"><img src="/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_1.JPG" alt="Event 1" /></div>
+      <div class="carousel-slide" onclick="openLightbox(1)"><img src="/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_2.jpeg" alt="Event 2" /></div>
+      <div class="carousel-slide" onclick="openLightbox(2)"><img src="/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_3.jpeg" alt="Event 3" /></div>
+      <div class="carousel-slide" onclick="openLightbox(3)"><img src="/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_4.PNG" alt="Event 4" /></div>
+      <div class="carousel-slide" onclick="openLightbox(4)"><img src="/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_5.jpg" alt="Event 5" /></div>
+    </div>
+  </div>
+  <div class="carousel-nav">
+    <button class="car-btn" onclick="carMove(-1)">&#8249;</button>
+    <div class="car-dots" id="carDots"></div>
+    <button class="car-btn" onclick="carMove(1)">&#8250;</button>
+  </div>
+</section>
+
+<!-- ══ SECTION 6: WHAT MAKES ME UNIQUE ══ -->
+<section id="unique">
+  <div class="unique-orb1"></div>
+  <div class="unique-orb2"></div>
+  <div class="unique-text">
+    <p class="unique-pre">My Approach</p>
+    <h2 class="unique-title">What makes my approach<br>(and me) so unique?</h2>
+    <p class="unique-para">My name is Kaela Atleework. As a Relational Arts Expert, I have spent the last decade studying and teaching Nonviolent Communication, Imago Dialogue, Public Speaking, Circling, Conflict Resolution, and Authentic Relating.</p>
+    <p class="unique-para" style="margin-top:1.2rem;">A significant reason for my particular talents is my unique brain chemistry/personality type. I am a high functioning autistic woman who is also very, very extroverted. This means that my whole life I have had a strong degree of orientation towards social connection, accompanied with a highly strategic and analytical mind.</p>
+    <p class="unique-close">
+      I am not "for everyone,"<br>
+      But I might just be <span class="for-you">for you...</span>
+    </p>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="#contact" class="btn">Let's Find Out</a>
+    </div>
+  </div>
+  <div class="unique-photo">
+    <img src="/mnt/user-data/uploads/SECTION_5_PHOTO.jpeg" alt="Kaela facilitating" />
+  </div>
+</section>
+
+<!-- ══ SECTION 8: CONTACT ══ -->
+<section id="contact">
+  <div class="contact-orb"></div>
+  <h2 class="contact-title">Connect With Me</h2>
+  <p class="contact-sub">Whether you're leading retreats, workshops, communities, or team experiences, I'd love to hear what you're creating. Reach out and let's explore whether working together feels like a good fit.</p>
+
+  <form class="contact-form" id="contactForm">
+    <div class="form-row">
+      <div class="form-field">
+        <label>Your Name</label>
+        <input type="text" name="name" placeholder="First & Last Name" required />
+      </div>
+      <div class="form-field">
+        <label>Your Email</label>
+        <input type="email" name="email" placeholder="you@email.com" required />
+      </div>
+    </div>
+    <div class="form-field full">
+      <label>Subject</label>
+      <input type="text" name="subject" placeholder="What are you working on?" />
+    </div>
+    <div class="form-field full">
+      <label>Message</label>
+      <textarea name="message" placeholder="Tell me about your event, project, or what you're creating..." required></textarea>
+    </div>
+    <div class="form-submit">
+      <button type="submit" class="btn btn-solid" style="font-size:13px;padding:16px 44px;letter-spacing:2px;">Let's Go! →</button>
+    </div>
+    <p class="form-success" id="formSuccess">✓ Message sent! I'll be in touch soon.</p>
+  </form>
+
+  <div class="contact-bottom-photo">
+    <img src="/mnt/user-data/uploads/SECTION_8_PHOTO.JPG" alt="Kaela in conversation" />
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Kaela the Connector &nbsp;·&nbsp; All rights reserved</p>
+</footer>
+
+<script>
+// ── CAROUSEL ──
+const carouselImages = [
+  '/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_1.JPG',
+  '/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_2.jpeg',
+  '/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_3.jpeg',
+  '/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_4.PNG',
+  '/mnt/user-data/uploads/PHOTO_CAROUSEL_PHOTO_5.jpg'
+];
+let carPos = 0;
+const track = document.getElementById('carTrack');
+const dotsEl = document.getElementById('carDots');
+const total = carouselImages.length;
+const visible = 3;
+const maxPos = total - visible;
+
+// build dots
+for (let i = 0; i <= maxPos; i++) {
+  const d = document.createElement('div');
+  d.className = 'car-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => carGoTo(i);
+  dotsEl.appendChild(d);
+}
+
+function carGoTo(pos) {
+  carPos = Math.max(0, Math.min(pos, maxPos));
+  const slideW = track.querySelector('.carousel-slide').offsetWidth + 16;
+  track.style.transform = `translateX(-${carPos * slideW}px)`;
+  document.querySelectorAll('.car-dot').forEach((d, i) => d.classList.toggle('active', i === carPos));
+}
+function carMove(dir) { carGoTo(carPos + dir); }
+
+// ── LIGHTBOX ──
+let lbIndex = 0;
+function openLightbox(i) {
+  lbIndex = i;
+  document.getElementById('lightbox-img').src = carouselImages[i];
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function lbNav(dir) {
+  lbIndex = (lbIndex + dir + total) % total;
+  document.getElementById('lightbox-img').src = carouselImages[lbIndex];
+}
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') lbNav(1);
+  if (e.key === 'ArrowLeft') lbNav(-1);
+});
+
+// ── CONTACT FORM ──
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = new FormData(this);
+  const name    = data.get('name');
+  const email   = data.get('email');
+  const subject = data.get('subject') || 'New message from KaelatheConnector.com';
+  const message = data.get('message');
+  const mailto  = `mailto:findkaela@gmail.com?subject=${encodeURIComponent(subject + ' — from ' + name)}&body=${encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + message)}`;
+  window.location.href = mailto;
+  document.getElementById('formSuccess').style.display = 'block';
+  this.reset();
+});
+</script>
+</body>
+</html>
